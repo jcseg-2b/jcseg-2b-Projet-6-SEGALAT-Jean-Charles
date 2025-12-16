@@ -1,0 +1,56 @@
+html, body {
+    height: 100%;
+    margin:0;
+    padding: 0;
+    max-width: 1440px;
+}
+
+header{
+    padding: 0 80px;
+}
+
+body {
+    background-color: #FFFEF8;
+    display: flex;
+    flex-direction: column;
+}
+
+.login {
+    font-weight:bold;
+}
+
+.image-insta {
+    width: 20px;
+}
+
+main {
+    flex:1;
+}
+
+#contact {
+    width: 100%;
+    margin:auto;
+}
+
+#contact form {
+    width: 30%;
+    margin: auto;
+}
+
+
+.forgot-password {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+}
+
+footer {
+    display: flex;
+    background-color:white;
+    height: 60px;
+    align-items: center;
+    justify-content:flex-end;
+    width: 100%;
+}
+
