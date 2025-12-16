@@ -2,10 +2,12 @@
 // Attends que la page HTML soit complètement chargée avant d'exécuter le code
 document.addEventListener('DOMContentLoaded', async () => {
   // Adresse de l'API qui renvoie la liste des projets
-  const API = 'http://localhost:5678/api/works';
+  const APIworks = 'http://localhost:5678/api/works';
+  const APIcategories = 'http://localhost:5678/api/categories';
   
   // Récupère la div vide "gallery" du HTML où on mettra les images
   const gallery = document.getElementById('gallery');
+  const filter = document.getElementById('filter');
   
   // Si la galerie n'existe pas dans le HTML, on arrête pour éviter une erreur
   if (!gallery) return;
@@ -41,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ===== SECTION 3 : APPEL À L'API =====
   try {
     // Envoie une requête GET à l'API et attend la réponse
-    const res = await fetch(API);
+    const res = await fetch(APIworks);
     
     // Si la réponse n'est pas correcte (ex: erreur 404/500), provoque une erreur
     if (!res.ok) throw new Error('statut ' + res.status);
@@ -57,24 +59,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ===== SECTION 4 : EXTRACTION DES CATÉGORIES =====
     // Crée un objet vide pour stocker les catégories uniques
-    const categoryMap = {};
-    
-    // Parcourt chaque projet reçu de l'API
-    data.forEach(item => {
-      // Si le projet a une categoryId et qu'on l'a pas encore ajoutée
-      if (item.categoryId && !categoryMap[item.categoryId]) {
-        // L'ajoute dans categoryMap avec son nom
-        categoryMap[item.categoryId] = item.category?.name || 'Catégorie ' + item.categoryId;
-      }
-    });
-    
-    // Transforme categoryMap en tableau d'objets { id, name }
-    // Exemple : [{ id: 1, name: "Objets" }, { id: 2, name: "Appartements" }]
-    const categories = Object.entries(categoryMap).map(([id, name]) => ({ id: parseInt(id), name }));
 
-    // DEBUG : affiche les catégories trouvées dans la console
-    console.log('categories:', categories);
 
+    const resFilter = await fetch(APIcategories);
+    // Si la réponse n'est pas correcte (ex: erreur 404/500), provoque une erreur
+    if (!resFilter.ok) throw new Error('statut ' + resFilter.status);
+
+    const categories = await resFilter.json();
+    
     // ===== SECTION 5 : CRÉATION DES BOUTONS DE FILTRE =====
     // Crée une div pour contenir tous les boutons
     const filterContainer = document.createElement('div');
@@ -113,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ===== SECTION 6 : INSERTION DES FILTRES =====
     // Insère le conteneur de filtres juste avant la galerie dans le HTML
-    gallery.parentElement.insertBefore(filterContainer, gallery);
+    filter.appendChild(filterContainer);
 
     // ===== SECTION 7 : FONCTION D'AFFICHAGE =====
     // Cette fonction vide la galerie, ajoute les nouvelles figures et met à jour les boutons
