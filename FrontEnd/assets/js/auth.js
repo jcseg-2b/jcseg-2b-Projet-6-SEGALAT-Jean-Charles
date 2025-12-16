@@ -1,11 +1,5 @@
- function ajoutListenerLogin(){
-
-    const loginForm = document.querySelector("form");
-    if (!loginForm) {
-        console.error("Formulaire non trouvé");
-        return;
-    }
-    loginForm.addEventListener("submit", async function (event) {
+function ajoutListenerLogin(){
+    document.querySelector("form").addEventListener("submit", async function (event) {
         event.preventDefault(); // empêche le rechargement
 
         // Récupère les valeurs
