@@ -3,11 +3,16 @@
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
   // Vérifier si connecté
-  /*const token = localStorage.getItem('authToken');
-if (token) {
-  document.body.classList.add('logged-in');
-}
-*/
+  const token = localStorage.getItem("authToken");
+  if (token) {
+    document.getElementById("admin-bar").classList.add("logged-in-flex");
+    document.getElementById("modif").classList.add("logged-in-flex");
+    document.getElementById("LogoutLink").classList.add("logged-in-flex");
+    document.getElementById("LoginLink").classList.add("logged-in-none");
+    document.querySelector("header").classList.add("margin-top");
+    document.getElementById("filter").classList.add("logged-in-none");
+  }
+
   // Les adresses des APIs pour récupérer les données
   const worksURL = "http://localhost:5678/api/works";
   const categoriesURL = "http://localhost:5678/api/categories";
