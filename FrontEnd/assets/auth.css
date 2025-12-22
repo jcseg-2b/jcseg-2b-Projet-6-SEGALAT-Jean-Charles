@@ -1,56 +1,64 @@
-html, body {
-    height: 100%;
-    margin:auto;
-    padding: 0;
-    max-width: 1440px;
-
-}
-
-header{
-    padding: 0 80px;
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: #FFFEF8;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 1440px;
+  background-color: #fffef8;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+header {
+  padding: 0 80px;
 }
 
 .login {
-    font-weight:bold;
+  font-weight: bold;
 }
 
 .image-insta {
-    width: 20px;
+  width: 20px;
 }
 
 main {
-    flex:1;
+  flex: 1;
 }
 
 #contact {
-    width: 100%;
-    margin:auto;
+  width: 100%;
+  margin: auto;
 }
 
 #contact form {
-    width: 30%;
-    margin: auto;
+  width: 30%;
+  margin: auto;
 }
 
 .forgot-password {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
 }
 
 footer {
-    display: flex;
-    background-color:white;
-    height: 60px;
-    align-items: center;
-    justify-content:flex-end;
-    width: 100%;
+  display: flex;
+  background-color: white;
+  height: 60px;
+  align-items: center;
+  justify-content: flex-end;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  bottom: 0;
+  padding-right: 80px;
+  box-sizing: border-box;
 }
-

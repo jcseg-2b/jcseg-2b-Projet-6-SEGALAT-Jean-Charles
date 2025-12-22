@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	margin-top: 60px;
 }
 header {
 	display: flex;
@@ -93,6 +94,13 @@ nav ul {
 nav li {
 	padding: 0 10px;
 	font-size: 1.2em;
+	text-decoration: none;
+	color:black;
+}
+
+nav a {
+	text-decoration: none;
+	color:black;
 }
 
 li:hover {
@@ -219,3 +227,81 @@ footer nav ul {
   color: white;
 }
 
+/* ajout admin-bar et modif du logout*/
+
+/* ajout admin-bar et modif du logout*/
+
+#admin-bar {
+	background-color:black;
+	height: 60px;
+	width: 100vw;
+	position: absolute;
+	top: 0;
+	left: 0;
+	color:white;
+	display: none; 
+	justify-content: center;
+	align-items: center;
+	gap:10px;
+	z-index: 1000;
+	margin-bottom:30px;
+}
+
+.btnWhite {
+	border: none;
+	background-color: black;
+	color: white;
+	cursor: pointer;
+}
+
+.btnBlack {
+	border:none;
+	background-color: #FFFEF8 ;
+	color:black;
+	cursor:pointer;
+}
+
+.portfolio-title {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 30px;
+  margin-bottom: 1em;
+}
+
+.portfolio-title h2 {
+  margin-bottom: 0;
+}
+
+#modif {
+  display: none; 
+  align-items: center;
+  gap: 10px;
+}
+
+#LogoutLink {
+  display: none; 
+}
+
+/* Afficher quand connecté 
+body.logged-in #admin-bar {
+  display: flex !important;
+}
+
+body.logged-in #LogoutLink {
+  display: block !important;
+}
+
+body.logged-in #modif {
+  display: flex !important;
+}
+
+/* Cacher le login quand connecté 
+body.logged-in #LoginLink {
+  display: none !important;
+}
+
+/* Ajouter marge quand connecté 
+body.logged-in {
+  margin-top: 100px !important;
+}

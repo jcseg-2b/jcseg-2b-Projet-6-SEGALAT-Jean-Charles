@@ -1,49 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Sophie Bluel - Architecte d'intérieur</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
-    <meta name="description" content="">
-    <link rel="stylesheet" href="../assets/style.css">
-    <link rel="stylesheet" href="../assets/auth.css">
-
-</head>
-<body>
-<header>
-    <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-    <nav>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="../assets/style.css" />
+    <link rel="stylesheet" href="../assets/auth.css" />
+    <script src="../assets/js/auth.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+      <nav>
         <ul>
-            <li>projets</li>
-            <li>contact</li>
-            <li class="login">login</li>
-            <li><img src="../assets/icons/instagram.png" class="image-insta" alt="Instagram"></li>
+          <li id="projets">projets</li>
+          <li id="contact">contact</li>
+          <li class="login">login</li>
+          <li>
+            <img
+              src="../assets/icons/instagram.png"
+              class="image-insta"
+              alt="Instagram"
+            />
+          </li>
         </ul>
-    </nav>
-</header>
-<main>
-    <section id="contact">
+      </nav>
+    </header>
+    <main>
+      <section id="contact">
         <h2>Log in</h2>
-        <form  id="form" action="#" method="post">
-            <label for="email">E-mail</label>
-            <input type="email" name="email" id="email">
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password">
-            <input type="submit" value="Se connecter">
-            <a href="#" class="forgot-password">Mot de passe oublié</a>
+        <form id="form" action="#" method="post">
+          <label for="email">E-mail</label>
+          <input type="email" name="email" id="email" />
+          <label for="password">Mot de passe</label>
+          <input type="password" name="password" id="password" />
+          <input type="submit" value="Se connecter" />
+          <a href="#" class="forgot-password">Mot de passe oublié</a>
         </form>
-    </section>
-</main>
-<footer>
-    <nav>
+      </section>
+    </main>
+    <footer>
+      <nav>
         <ul>
-            <li>Mentions Légales</li>
+          <li>Mentions Légales</li>
         </ul>
-    </nav>
-</footer>
-<script src="../assets/js/auth.js"></script>
-</body>
+      </nav>
+    </footer>
+  </body>
 </html>
