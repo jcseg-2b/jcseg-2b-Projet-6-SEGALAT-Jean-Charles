@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("LoginLink").classList.add("logged-in-none");
     document.querySelector("header").classList.add("margin-top");
     document.getElementById("filter").classList.add("logged-in-none");
+
+    //
   }
 
   // Les adresses des APIs pour récupérer les données
@@ -172,3 +174,22 @@ document.addEventListener("DOMContentLoaded", () => {
     clickedButton.classList.add("active");
   };
 });
+
+// Fonction de déconnexion
+function logout() {
+  // 1. Supprimer le token du localStorage
+  localStorage.removeItem("authToken");
+
+  document.getElementById("admin-bar").classList.remove("logged-in-flex");
+  document.getElementById("modif").classList.remove("logged-in-flex");
+  document.getElementById("LoginLink").classList.remove("logged-in-none");
+  document.getElementById("LogoutLink").classList.remove("logged-in-flex");
+  document.querySelector("header").classList.remove("margin-top");
+  document.getElementById("filter").classList.remove("logged-in-none");
+
+  // Rechargement de la page
+  window.location.reload();
+}
+
+// Attacher la fonction au bouton logout
+document.getElementById("LogoutLink").addEventListener("click", logout);
