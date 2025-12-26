@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("LoginLink").classList.add("logged-in-none");
     document.querySelector("header").classList.add("margin-top");
     document.getElementById("filter").classList.add("logged-in-none");
+    document.querySelector(".btnBlack").classList.add("logged-in-flex");
 
     //
   }
@@ -193,3 +194,18 @@ function logout() {
 
 // Attacher la fonction au bouton logout
 document.getElementById("LogoutLink").addEventListener("click", logout);
+
+// modal
+// Quand on clique sur "Modifier"
+document.querySelector(".btnBlack").addEventListener("click", () => {
+  const gallery = document.getElementById("gallery");
+  const gallery1 = document.getElementById("gallery1");
+
+  const images = gallery.querySelectorAll("img");
+
+  gallery1.innerHTML = "";
+
+  images.forEach((img) => {
+    gallery1.appendChild(img.cloneNode(true));
+  });
+});

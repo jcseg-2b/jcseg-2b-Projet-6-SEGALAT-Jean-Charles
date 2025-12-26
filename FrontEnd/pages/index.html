@@ -11,6 +11,10 @@
       rel="stylesheet"
     />
     <meta name="description" content="" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="../assets/style.css" />
     <script src="../assets/js/index.js" defer></script>
   </head>
@@ -55,13 +59,25 @@
           </p>
         </article>
       </section>
-      <section id="portfolio">
-        <div class="portfolio-title">
-          <h2>Mes Projets</h2>
-          <div id="modif">
-            <img src="../assets/icons/Group.png" alt="Mode édition" />
-            <button class="btnBlack">Mode édition</button>
-          </div>
+     <div class="portfolio-title">
+  <h2>Mes Projets</h2>
+  <div id="modif">
+    <img src="../assets/icons/Group.png" alt="Mode édition" />
+  </div>
+  <a href="#modal1" class="btnBlack">Modifier</a>
+</div>
+
+<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal">
+  <div class="modal-wrapper">
+    <a href="#" class="modal-close" aria-label="Fermer la fenêtre">
+      <i class="fa fa-times"></i>
+    </a>
+    <h1 id="titlemodal" class="titlemodal">Galerie photo</h1>
+    <div class="gallery1" id="gallery1"></div>
+    <div class="modal-border"></div>
+    <button class="btn">Ajouter une photo</button>
+  </div>
+</aside>
         </div>
         <div class="filter" id="filter"></div>
         <div class="gallery" id="gallery"></div>
