@@ -48,7 +48,7 @@
           </p>
           <p>
             Chaque projet sera étudié en commun, de façon à mettre en valeur les
-            volumes, les matières et les couleurs dans le respect de l’esprit
+            volumes, les matières et les couleurs dans le respect de l'esprit
             des lieux et le choix adapté des matériaux. Le suivi du chantier
             sera assuré dans le souci du détail, le respect du planning et du
             budget.
@@ -59,29 +59,37 @@
           </p>
         </article>
       </section>
-     <div class="portfolio-title">
-  <h2>Mes Projets</h2>
-  <div id="modif">
-    <img src="../assets/icons/Group.png" alt="Mode édition" />
-  </div>
-  <a href="#modal1" class="btnBlack">Modifier</a>
-</div>
 
-<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="titlemodal">
-  <div class="modal-wrapper">
-    <a href="#" class="modal-close" aria-label="Fermer la fenêtre">
-      <i class="fa fa-times"></i>
-    </a>
-    <h1 id="titlemodal" class="titlemodal">Galerie photo</h1>
-    <div class="gallery1" id="gallery1"></div>
-    <div class="modal-border"></div>
-    <button class="btn">Ajouter une photo</button>
-  </div>
-</aside>
+      <section id="portfolio">
+        <div class="portfolio-title">
+          <h2>Mes Projets</h2>
+          <div id="modif">
+            <img src="../assets/icons/Group.png" alt="Mode édition" />
+          </div>
+          <a href="#modal1" class="btnBlack js-modal">Modifier</a>
         </div>
         <div class="filter" id="filter"></div>
         <div class="gallery" id="gallery"></div>
       </section>
+
+      <aside
+        id="modal1"
+        class="modal"
+        aria-hidden="true"
+        role="dialog"
+        aria-labelledby="titlemodal"
+      >
+        <div class="modal-wrapper js-modal-stop">
+          <a href="#" class="modal-close" aria-label="Fermer la fenêtre">
+            <i class="fa fa-times"></i>
+          </a>
+          <h1 id="titlemodal" class="titlemodal">Galerie photo</h1>
+          <div class="gallery1" id="gallery1"></div>
+          <div class="modal-border"></div>
+          <button class="btn">Ajouter une photo</button>
+        </div>
+      </aside>
+
       <section id="contact">
         <h2>Contact</h2>
         <p>Vous avez un projet ? Discutons-en !</p>

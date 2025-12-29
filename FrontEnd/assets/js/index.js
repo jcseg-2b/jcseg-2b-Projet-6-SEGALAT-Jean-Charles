@@ -195,17 +195,131 @@ function logout() {
 // Attacher la fonction au bouton logout
 document.getElementById("LogoutLink").addEventListener("click", logout);
 
-// modal
-// Quand on clique sur "Modifier"
-document.querySelector(".btnBlack").addEventListener("click", () => {
-  const gallery = document.getElementById("gallery");
+//modal grafikart
+let modal = null;
+const focusableSelector = "button, a, input, textarea";
+let focusables = [];
+let previouslyFocusedElement = null;
+
+// ✅ FONCTION POUR AFFICHER LES IMAGES DANS LA MODAL
+const displayWorksInModal = function () {
+  const galleryMain = document.getElementById("gallery");
   const gallery1 = document.getElementById("gallery1");
 
-  const images = gallery.querySelectorAll("img");
+  if (!galleryMain || !gallery1) {
+    console.error("Galerie principale ou modale introuvable !");
+    return;
+  }
 
+  // Vider la galerie de la modal
   gallery1.innerHTML = "";
 
+  // Récupérer toutes les images de la galerie principale
+  const images = galleryMain.querySelectorAll("img");
+
+  // Dupliquer chaque image dans la modal
   images.forEach((img) => {
-    gallery1.appendChild(img.cloneNode(true));
+    // Créer un conteneur pour l'image + bouton
+    const imageWrapper = document.createElement("div");
+    imageWrapper.style.position = "relative";
+
+    // Cloner l'image
+    const clonedImg = img.cloneNode(true);
+
+    // Créer le bouton poubelle
+    const deleteButton = document.createElement("button");
+    deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
+    deleteButton.className = "delete-btn";
+
+    // Ajouter l'evenement click(à completer plus tard)
+    deleteButton.addEventListener("click", function () {
+      //plus tard fonction pour supprimer le projet
+      console.log("Supprimer l'image:", img.alt);
+    });
+
+    // Assembler : image + bouton dans le conteneur
+    imageWrapper.appendChild(clonedImg);
+    imageWrapper.appendChild(deleteButton);
+    gallery1.appendChild(imageWrapper);
   });
+};
+
+const openModal = function (e) {
+  e.preventDefault();
+  modal = document.querySelector(e.target.getAttribute("href"));
+  focusables = Array.from(modal.querySelectorAll(focusableSelector));
+  previouslyFocusedElement = document.querySelector(":focus");
+
+  if (focusables.length > 0) {
+    focusables[0].focus();
+  }
+
+  modal.style.display = null;
+  modal.removeAttribute("aria-hidden");
+  modal.setAttribute("aria-modal", "true");
+  modal.addEventListener("click", closeModal);
+  modal.querySelector(".modal-close").addEventListener("click", closeModal);
+  modal
+    .querySelector(".js-modal-stop")
+    .addEventListener("click", stopPropagation);
+
+  // ✅ AFFICHER LES IMAGES DÈS L'OUVERTURE
+  displayWorksInModal();
+};
+
+const closeModal = function (e) {
+  if (modal === null) return;
+  if (previouslyFocusedElement !== null) previouslyFocusedElement.focus();
+  e.preventDefault();
+
+  modal.setAttribute("aria-hidden", "true");
+  modal.removeAttribute("aria-modal");
+  modal.removeEventListener("click", closeModal);
+  modal.querySelector(".modal-close").removeEventListener("click", closeModal);
+  modal
+    .querySelector(".js-modal-stop")
+    .removeEventListener("click", stopPropagation);
+
+  window.setTimeout(function () {
+    modal.style.display = "none";
+    modal = null;
+  }, 500);
+};
+
+const stopPropagation = function (e) {
+  e.stopPropagation();
+};
+
+const focusInModal = function (e) {
+  e.preventDefault();
+  let index = focusables.findIndex((f) => f === modal.querySelector(":focus"));
+
+  if (e.shiftKey === true) {
+    index--;
+  } else {
+    index++;
+  }
+
+  if (index >= focusables.length) {
+    index = 0;
+  }
+
+  if (index < 0) {
+    index = focusables.length - 1;
+  }
+
+  focusables[index].focus();
+};
+
+document.querySelectorAll(".js-modal").forEach((a) => {
+  a.addEventListener("click", openModal);
+});
+
+window.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" || e.key === "Esc") {
+    closeModal(e);
+  }
+  if (e.key === "Tab" && modal !== null) {
+    focusInModal(e);
+  }
 });
