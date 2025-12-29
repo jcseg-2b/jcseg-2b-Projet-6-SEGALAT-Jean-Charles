@@ -1,4 +1,11 @@
-// ========================================
+var works = [];
+var categories = [];
+
+// Les adresses des APIs pour récupérer les données
+const worksURL = "http://localhost:5678/api/works";
+const categoriesURL = "http://localhost:5678/api/categories";
+
+// =======================================
 // ÉTAPE 1 : Attendre que la page soit prête
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,13 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("header").classList.add("margin-top");
     document.getElementById("filter").classList.add("logged-in-none");
     document.querySelector(".btnBlack").classList.add("logged-in-flex");
-
-    //
   }
-
-  // Les adresses des APIs pour récupérer les données
-  const worksURL = "http://localhost:5678/api/works";
-  const categoriesURL = "http://localhost:5678/api/categories";
 
   // Récupérer les éléments HTML
   const gallery = document.getElementById("gallery");
@@ -32,16 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ========================================
   // ÉTAPE 2 : Charger toutes les données
-  // ========================================
+  // =======================================
   loadAll();
 
   async function loadAll() {
     try {
       // Récupérer les projets
-      const works = await fetchWorks();
+      works = await fetchWorks();
 
       // Récupérer les catégories
-      const categories = await fetchCategories();
+      categories = await fetchCategories();
 
       // Créer les boutons de filtre
       createFilterButtons(categories, works);
@@ -187,9 +188,6 @@ function logout() {
   document.getElementById("LogoutLink").classList.remove("logged-in-flex");
   document.querySelector("header").classList.remove("margin-top");
   document.getElementById("filter").classList.remove("logged-in-none");
-
-  // Rechargement de la page
-  window.location.reload();
 }
 
 // Attacher la fonction au bouton logout
@@ -203,42 +201,34 @@ let previouslyFocusedElement = null;
 
 // ✅ FONCTION POUR AFFICHER LES IMAGES DANS LA MODAL
 const displayWorksInModal = function () {
-  const galleryMain = document.getElementById("gallery");
   const gallery1 = document.getElementById("gallery1");
-
-  if (!galleryMain || !gallery1) {
-    console.error("Galerie principale ou modale introuvable !");
-    return;
-  }
 
   // Vider la galerie de la modal
   gallery1.innerHTML = "";
-
-  // Récupérer toutes les images de la galerie principale
-  const images = galleryMain.querySelectorAll("img");
-
-  // Dupliquer chaque image dans la modal
-  images.forEach((img) => {
+  // Afficher chaque image dans la modal
+  works.forEach((work) => {
     // Créer un conteneur pour l'image + bouton
     const imageWrapper = document.createElement("div");
     imageWrapper.style.position = "relative";
 
-    // Cloner l'image
-    const clonedImg = img.cloneNode(true);
+    // Créer l'image
+    const imageModal = document.createElement("img");
+    imageModal.src = work.imageUrl;
+    imageModal.alt = work.title;
 
     // Créer le bouton poubelle
     const deleteButton = document.createElement("button");
-    deleteButton.innerHTML = `<i class="fa fa-trash"></i>`;
+    deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
     deleteButton.className = "delete-btn";
 
     // Ajouter l'evenement click(à completer plus tard)
     deleteButton.addEventListener("click", function () {
       //plus tard fonction pour supprimer le projet
-      console.log("Supprimer l'image:", img.alt);
+      console.log("Supprimer l'image:", work.alt);
     });
 
     // Assembler : image + bouton dans le conteneur
-    imageWrapper.appendChild(clonedImg);
+    imageWrapper.appendChild(imageModal);
     imageWrapper.appendChild(deleteButton);
     gallery1.appendChild(imageWrapper);
   });
