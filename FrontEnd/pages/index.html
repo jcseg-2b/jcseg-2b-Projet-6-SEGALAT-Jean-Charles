@@ -86,10 +86,62 @@
           <h1 id="titlemodal" class="titlemodal">Galerie photo</h1>
           <div class="gallery1" id="gallery1"></div>
           <div class="modal-border"></div>
-          <button class="btn">Ajouter une photo</button>
+          <button class="btn" id="btn-add-photo">Ajouter une photo</button>
         </div>
       </aside>
+      <aside
+        id="modal2"
+        class="modal"
+        aria-hidden="true"
+        role="dialog"
+        aria-labelledby="titlemodal2"
+      >
+        <div class="modal-wrapper js-modal-stop">
+          <a href="#" class="modal-back" id="modal-back" aria-label="Retour">
+            <i class="fa fa-arrow-left"></i>
+          </a>
+          <a href="#" class="modal-close" aria-label="Fermer la fenêtre">
+            <i class="fa fa-times"></i>
+          </a>
+          <h1 id="titlemodal2" class="titlemodal">Ajout photo</h1>
 
+          <form id="add-photo-form" class="add-photo-form">
+            <div class="upload-zone" id="upload-zone">
+              <i class="fa-regular fa-image upload-icon"></i>
+              <label for="photo-input" class="upload-btn"
+                >+ Ajouter photo</label
+              >
+              <input
+                type="file"
+                id="photo-input"
+                name="image"
+                accept="image/png, image/jpeg"
+                required
+                hidden
+              />
+              <p class="upload-info">jpg, png : 4mo max</p>
+              <img
+                id="preview-image"
+                class="preview-image"
+                src=""
+                alt="Prévisualisation"
+              />
+            </div>
+
+            <label for="photo-title">Titre</label>
+            <input type="text" id="photo-title" name="title" required />
+
+            <label for="photo-category">Catégorie</label>
+            <select id="photo-category" name="category" required>
+              <option value=""></option>
+            </select>
+
+            <button type="submit" class="btn btn-validate" id="btn-validate">
+              Valider
+            </button>
+          </form>
+        </div>
+      </aside>
       <section id="contact">
         <h2>Contact</h2>
         <p>Vous avez un projet ? Discutons-en !</p>

@@ -1,16 +1,126 @@
-var works = [];
-var categories = [];
+// Déclaration de deux tableaux vides qui vont stocker nos données
+var works = []; // Contiendra tous les projets (works)
+var categories = []; // Contiendra toutes les catégories
 
 // Les adresses des APIs pour récupérer les données
 const worksURL = "http://localhost:5678/api/works";
 const categoriesURL = "http://localhost:5678/api/categories";
 
+// Variable pour la galerie (accessible globalement)
+let gallery = null;
+
+// ========================================
+// FONCTION : Créer une figure (image + titre)
+// ========================================
+const createFigure = (work) => {
+  const figure = document.createElement("figure");
+  figure.setAttribute("data-id", work.id);
+
+  const image = document.createElement("img");
+  image.src = work.imageUrl;
+  image.alt = work.title;
+
+  const caption = document.createElement("figcaption");
+  caption.textContent = work.title;
+
+  figure.appendChild(image);
+  figure.appendChild(caption);
+
+  return figure;
+};
+
+// ========================================
+// FONCTION : Afficher les projets (GLOBALE)
+// ========================================
+const displayWorks = (worksToDisplay) => {
+  if (!gallery) {
+    gallery = document.getElementById("gallery");
+  }
+  gallery.innerHTML = "";
+
+  worksToDisplay.forEach((work) => {
+    const figure = createFigure(work);
+    gallery.appendChild(figure);
+  });
+};
+
+// ========================================
+// FONCTION : Afficher les images dans la modal (GLOBALE)
+// ========================================
+const displayWorksInModal = function () {
+  const gallery1 = document.getElementById("gallery1");
+  gallery1.innerHTML = "";
+
+  works.forEach((work) => {
+    const imageWrapper = document.createElement("div");
+    imageWrapper.style.position = "relative";
+    imageWrapper.setAttribute("data-id", work.id);
+
+    const imageModal = document.createElement("img");
+    imageModal.src = work.imageUrl;
+    imageModal.alt = work.title;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.innerHTML = `<i class="fa-solid fa-trash-can" style="pointer-events: none;"></i>`;
+    deleteButton.className = "delete-btn";
+
+    // Événement de suppression
+    deleteButton.addEventListener("click", async function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      console.log("=== CLIC POUBELLE ===");
+      console.log("work.id:", work.id);
+
+      const confirmation = confirm("Supprimer cette image ?");
+      console.log("Confirmation:", confirmation);
+
+      if (!confirmation) {
+        console.log("Annulé");
+        return;
+      }
+
+      const token = localStorage.getItem("authToken");
+      console.log("Token:", token);
+
+      try {
+        const response = await fetch(
+          `http://localhost:5678/api/works/${work.id}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log("Response status:", response.status);
+
+        if (response.ok) {
+          console.log("Suppression réussie !");
+          // Supprimer du tableau works
+          works = works.filter((w) => w.id !== work.id);
+          // Rafraîchir les deux galeries
+          displayWorks(works);
+          displayWorksInModal();
+        } else {
+          console.log("Erreur API:", response.status);
+        }
+      } catch (error) {
+        console.error("Erreur:", error);
+      }
+    });
+
+    imageWrapper.appendChild(imageModal);
+    imageWrapper.appendChild(deleteButton);
+    gallery1.appendChild(imageWrapper);
+  });
+};
+
 // =======================================
-// ÉTAPE 1 : Attendre que la page soit prête
+// DOMContentLoaded
 // ========================================
 document.addEventListener("DOMContentLoaded", () => {
-  // Vérifier si connecté
   const token = localStorage.getItem("authToken");
+
   if (token) {
     document.getElementById("admin-bar").classList.add("logged-in-flex");
     document.getElementById("modif").classList.add("logged-in-flex");
@@ -21,33 +131,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".btnBlack").classList.add("logged-in-flex");
   }
 
-  // Récupérer les éléments HTML
-  const gallery = document.getElementById("gallery");
+  document.getElementById("LogoutLink").addEventListener("click", logout);
+
+  gallery = document.getElementById("gallery");
   const filter = document.getElementById("filter");
 
-  // Si la galerie n'existe pas, on arrête
   if (!gallery) {
     console.error("L'élément #gallery n'existe pas !");
     return;
   }
 
-  // ========================================
-  // ÉTAPE 2 : Charger toutes les données
-  // =======================================
   loadAll();
 
   async function loadAll() {
     try {
-      // Récupérer les projets
       works = await fetchWorks();
-
-      // Récupérer les catégories
       categories = await fetchCategories();
-
-      // Créer les boutons de filtre
       createFilterButtons(categories, works);
-
-      // Afficher tous les projets au départ
       displayWorks(works);
     } catch (error) {
       console.error("Erreur:", error);
@@ -56,42 +156,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ========================================
-  // FONCTION : Récupérer les projets
-  // ========================================
   async function fetchWorks() {
     const response = await fetch(worksURL);
-
     if (!response.ok) {
       throw new Error("Impossible de récupérer les projets");
     }
-
-    const works = await response.json();
-    return works;
+    return await response.json();
   }
 
-  // ========================================
-  // FONCTION : Récupérer les catégories
-  // ========================================
   async function fetchCategories() {
     const response = await fetch(categoriesURL);
-
     if (!response.ok) {
       throw new Error("Impossible de récupérer les catégories");
     }
-
-    const categories = await response.json();
-    return categories;
+    return await response.json();
   }
 
-  // ========================================
-  // FONCTION : Créer les boutons de filtre
-  // ========================================
-  const createFilterButtons = (categories, works) => {
+  const createFilterButtons = (categories, worksData) => {
     const buttonContainer = document.createElement("div");
     buttonContainer.className = "filters";
 
-    // --- Bouton "Tous" ---
     const allButton = document.createElement("button");
     allButton.textContent = "Tous";
     allButton.className = "filter-btn active";
@@ -103,18 +187,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     buttonContainer.appendChild(allButton);
 
-    // --- Boutons par catégorie ---
     categories.forEach((category) => {
       const button = document.createElement("button");
       button.textContent = category.name;
       button.className = "filter-btn";
 
       button.addEventListener("click", () => {
-        // Filtrer les projets par catégorie
         const filteredWorks = works.filter(
           (work) => work.categoryId === category.id
         );
-
         displayWorks(filteredWorks);
         activateButton(button);
       });
@@ -125,115 +206,34 @@ document.addEventListener("DOMContentLoaded", () => {
     filter.appendChild(buttonContainer);
   };
 
-  // ========================================
-  // FONCTION : Afficher les projets
-  // ========================================
-  const displayWorks = (works) => {
-    // Vider la galerie
-    gallery.innerHTML = "";
-
-    // Créer une figure pour chaque projet
-    works.forEach((work) => {
-      const figure = createFigure(work);
-      gallery.appendChild(figure);
-    });
-  };
-
-  // ========================================
-  // FONCTION : Créer une figure (image + titre)
-  // ========================================
-  const createFigure = (work) => {
-    // Créer la balise <figure>
-    const figure = document.createElement("figure");
-
-    // Créer l'image
-    const image = document.createElement("img");
-    image.src = work.imageUrl;
-    image.alt = work.title;
-
-    // Créer le titre
-    const caption = document.createElement("figcaption");
-    caption.textContent = work.title;
-
-    // Assembler le tout
-    figure.appendChild(image);
-    figure.appendChild(caption);
-
-    return figure;
-  };
-
-  // ========================================
-  // FONCTION : Activer un bouton
-  // ========================================
   const activateButton = (clickedButton) => {
-    // Désactiver tous les boutons
     const allButtons = document.querySelectorAll(".filter-btn");
     allButtons.forEach((button) => {
       button.classList.remove("active");
     });
-
-    // Activer le bouton cliqué
     clickedButton.classList.add("active");
   };
 });
 
 // Fonction de déconnexion
 function logout() {
-  // 1. Supprimer le token du localStorage
   localStorage.removeItem("authToken");
-
   document.getElementById("admin-bar").classList.remove("logged-in-flex");
   document.getElementById("modif").classList.remove("logged-in-flex");
   document.getElementById("LoginLink").classList.remove("logged-in-none");
   document.getElementById("LogoutLink").classList.remove("logged-in-flex");
   document.querySelector("header").classList.remove("margin-top");
   document.getElementById("filter").classList.remove("logged-in-none");
+  document.querySelector(".btnBlack").classList.remove("logged-in-flex");
 }
 
-// Attacher la fonction au bouton logout
-document.getElementById("LogoutLink").addEventListener("click", logout);
-
-//modal grafikart
+// ========================================
+// MODAL - Gestion de la modale
+// ========================================
 let modal = null;
 const focusableSelector = "button, a, input, textarea";
 let focusables = [];
 let previouslyFocusedElement = null;
-
-// ✅ FONCTION POUR AFFICHER LES IMAGES DANS LA MODAL
-const displayWorksInModal = function () {
-  const gallery1 = document.getElementById("gallery1");
-
-  // Vider la galerie de la modal
-  gallery1.innerHTML = "";
-  // Afficher chaque image dans la modal
-  works.forEach((work) => {
-    // Créer un conteneur pour l'image + bouton
-    const imageWrapper = document.createElement("div");
-    imageWrapper.style.position = "relative";
-
-    // Créer l'image
-    const imageModal = document.createElement("img");
-    imageModal.src = work.imageUrl;
-    imageModal.alt = work.title;
-
-    // Créer le bouton poubelle
-    const deleteButton = document.createElement("button");
-    deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
-    deleteButton.className = "delete-btn";
-
-    // Ajouter l'evenement click(à completer plus tard)
-    deleteButton.addEventListener("click", function () {
-      //plus tard fonction pour supprimer le projet
-      console.log("Supprimer l'image:", work.alt);
-    });
-
-    // Assembler : image + bouton dans le conteneur
-    imageWrapper.appendChild(imageModal);
-    imageWrapper.appendChild(deleteButton);
-    gallery1.appendChild(imageWrapper);
-  });
-};
-
 const openModal = function (e) {
   e.preventDefault();
   modal = document.querySelector(e.target.getAttribute("href"));
@@ -244,7 +244,7 @@ const openModal = function (e) {
     focusables[0].focus();
   }
 
-  modal.style.display = null;
+  modal.style.display = "flex";
   modal.removeAttribute("aria-hidden");
   modal.setAttribute("aria-modal", "true");
   modal.addEventListener("click", closeModal);
@@ -253,7 +253,6 @@ const openModal = function (e) {
     .querySelector(".js-modal-stop")
     .addEventListener("click", stopPropagation);
 
-  // ✅ AFFICHER LES IMAGES DÈS L'OUVERTURE
   displayWorksInModal();
 };
 
@@ -311,5 +310,51 @@ window.addEventListener("keydown", function (e) {
   }
   if (e.key === "Tab" && modal !== null) {
     focusInModal(e);
+  }
+});
+
+// ========================================
+// MODAL 2 - Ajout de photo
+// ========================================
+
+const modal2 = document.getElementById("modal2");
+const btnAddPhoto = document.getElementById("btn-add-photo");
+const modalBack = document.getElementById("modal-back");
+
+// Ouvrir Modal 2 quand on clique sur "Ajouter une photo"
+btnAddPhoto.addEventListener("click", function () {
+  // Cacher Modal 1
+  modal.style.display = "none";
+  // Afficher Modal 2
+  modal2.style.display = "flex";
+  modal2.removeAttribute("aria-hidden");
+  modal2.setAttribute("aria-modal", "true");
+});
+
+// Retour à Modal 1 quand on clique sur la flèche
+modalBack.addEventListener("click", function (e) {
+  e.preventDefault();
+  // Cacher Modal 2
+  modal2.style.display = "none";
+  modal2.setAttribute("aria-hidden", "true");
+  modal2.removeAttribute("aria-modal");
+  // Afficher Modal 1
+  modal.style.display = "flex";
+});
+
+// Fermer Modal 2 avec le bouton X
+modal2.querySelector(".modal-close").addEventListener("click", function (e) {
+  e.preventDefault();
+  modal2.style.display = "none";
+  modal2.setAttribute("aria-hidden", "true");
+  modal2.removeAttribute("aria-modal");
+});
+
+// Fermer Modal 2 en cliquant en dehors
+modal2.addEventListener("click", function (e) {
+  if (e.target === modal2) {
+    modal2.style.display = "none";
+    modal2.setAttribute("aria-hidden", "true");
+    modal2.removeAttribute("aria-modal");
   }
 });
