@@ -539,6 +539,13 @@ footer nav ul {
   text-decoration: none;
 }
 
+.titlemodal2 {
+  color: black;
+  font-family: "Work Sans";
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
 .modal-back:hover {
   color: #1d6154;
 }
@@ -551,14 +558,14 @@ footer nav ul {
   align-items: center;
   justify-content: center;
   padding: 30px;
-  margin: 20px 0;
-  width: 100%;
+  margin: auto;
+  width: 70%;
+  border-radius: 5px;
 }
 
 .upload-icon {
   font-size: 60px;
   color: #b9c5cc;
-  margin-bottom: 15px;
 }
 
 .upload-btn {
@@ -601,18 +608,39 @@ footer nav ul {
 
 .add-photo-form input[type="text"],
 .add-photo-form select {
-  padding: 10px;
+  padding: 20px;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  width: 70%;
+  margin: auto;
 }
 
 .btn-validate {
   margin-top: 30px;
   background-color: #a7a7a7;
   cursor: not-allowed;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 
 .btn-validate.active {
   background-color: #1d6154;
   cursor: pointer;
+}
+
+.modal-border2 {
+  border: 1px solid #b3b3b3;
+  width: 70%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.photo-modal2 {
+  display: block;
+  margin-left: 85px;
+}
+
+.photo-category {
+  background-color: white;
 }

@@ -103,7 +103,7 @@
           <a href="#" class="modal-close" aria-label="Fermer la fenêtre">
             <i class="fa fa-times"></i>
           </a>
-          <h1 id="titlemodal2" class="titlemodal">Ajout photo</h1>
+          <h1 id="titlemodal2" class="titlemodal2">Ajout photo</h1>
 
           <form id="add-photo-form" class="add-photo-form">
             <div class="upload-zone" id="upload-zone">
@@ -128,14 +128,19 @@
               />
             </div>
 
-            <label for="photo-title">Titre</label>
+            <label for="photo-title" class="photo-modal2">Titre</label>
             <input type="text" id="photo-title" name="title" required />
 
-            <label for="photo-category">Catégorie</label>
-            <select id="photo-category" name="category" required>
+            <label for="photo-category" class="photo-modal2">Catégorie</label>
+            <select
+              id="photo-category"
+              class="photo-category"
+              name="category"
+              required
+            >
               <option value=""></option>
             </select>
-
+            <div class="modal-border2"></div>
             <button type="submit" class="btn btn-validate" id="btn-validate">
               Valider
             </button>
