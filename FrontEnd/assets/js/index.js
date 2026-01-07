@@ -329,6 +329,16 @@ btnAddPhoto.addEventListener("click", function () {
   modal2.style.display = "flex";
   modal2.removeAttribute("aria-hidden");
   modal2.setAttribute("aria-modal", "true");
+  const categorySelect = document.getElementById("photo-category");
+  // Vider les options existantes
+  categorySelect.innerHTML = '<option value=""></option>';
+  // Ajouter les catégories comme options
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    categorySelect.appendChild(option);
+  });
 });
 
 // Retour à Modal 1 quand on clique sur la flèche
@@ -358,3 +368,38 @@ modal2.addEventListener("click", function (e) {
     modal2.removeAttribute("aria-modal");
   }
 });
+
+// ================ FORMULAIRE AJOUT PHOTO =================
+const photoInput = document.getElementById("photo-input");
+const previewImage = document.getElementById("preview-image");
+const uploadZone = document.getElementById("upload-zone");
+const photoTitle = document.getElementById("photo-title");
+const photoCategory = document.getElementById("photo-category");
+const btnValidate = document.getElementById("btn-validate");
+
+function checkForm() {
+  if (photoInput.files[0] && photoTitle.value && photoCategory.value) {
+    btnValidate.classList.add("active");
+  } else {
+    btnValidate.classList.remove("active");
+  }
+}
+
+photoInput.addEventListener("change", function () {
+  const file = photoInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      previewImage.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+    previewImage.style.display = "block";
+    uploadZone.querySelector(".upload-icon").style.display = "none";
+    uploadZone.querySelector(".upload-btn").style.display = "none";
+    uploadZone.querySelector(".upload-info").style.display = "none";
+    checkForm();
+  }
+});
+
+photoTitle.addEventListener("input", checkForm);
+photoCategory.addEventListener("change", checkForm);
