@@ -348,6 +348,7 @@ modalBack.addEventListener("click", function (e) {
   modal2.style.display = "none";
   modal2.setAttribute("aria-hidden", "true");
   modal2.removeAttribute("aria-modal");
+  resetForm();
   // Afficher Modal 1
   modal.style.display = "flex";
 });
@@ -358,6 +359,7 @@ modal2.querySelector(".modal-close").addEventListener("click", function (e) {
   modal2.style.display = "none";
   modal2.setAttribute("aria-hidden", "true");
   modal2.removeAttribute("aria-modal");
+  resetForm();
 });
 
 // Fermer Modal 2 en cliquant en dehors
@@ -366,6 +368,7 @@ modal2.addEventListener("click", function (e) {
     modal2.style.display = "none";
     modal2.setAttribute("aria-hidden", "true");
     modal2.removeAttribute("aria-modal");
+    resetForm();
   }
 });
 
@@ -376,6 +379,7 @@ const uploadZone = document.getElementById("upload-zone");
 const photoTitle = document.getElementById("photo-title");
 const photoCategory = document.getElementById("photo-category");
 const btnValidate = document.getElementById("btn-validate");
+const addPhotoForm = document.getElementById("add-photo-form");
 
 function checkForm() {
   if (photoInput.files[0] && photoTitle.value && photoCategory.value) {
@@ -383,6 +387,15 @@ function checkForm() {
   } else {
     btnValidate.classList.remove("active");
   }
+}
+function resetForm() {
+  addPhotoForm.reset();
+  previewImage.style.display = "none";
+  previewImage.src = "";
+  uploadZone.querySelector(".upload-icon").style.display = "block";
+  uploadZone.querySelector(".upload-btn").style.display = "block";
+  uploadZone.querySelector(".upload-info").style.display = "block";
+  btnValidate.classList.remove("active");
 }
 
 photoInput.addEventListener("change", function () {
@@ -403,3 +416,38 @@ photoInput.addEventListener("change", function () {
 
 photoTitle.addEventListener("input", checkForm);
 photoCategory.addEventListener("change", checkForm);
+
+// ========== SOUMISSION FORMULAIRE A L'API ==============
+addPhotoForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+  console.log("=== ENVOI FORMULAIRE ===");
+  const formData = new FormData();
+  formData.append("image", photoInput.files[0]);
+  formData.append("title", photoTitle.value);
+  formData.append("category", photoCategory.value);
+  console.log("Image:", photoInput.files[0]);
+  console.log("Titre:", photoTitle.value);
+  console.log("Catégorie:", photoCategory.value);
+  const token = localStorage.getItem("authToken");
+  console.log("Token:", token);
+  try {
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+    console.log("Response status:", response.status);
+    if (response.ok) {
+      const newWork = await response.json();
+      newWork.categoryId = parseInt(newWork.categoryId);
+      works.push(newWork);
+      displayWorks(works);
+      displayWorksInModal();
+      resetForm();
+    } else {
+      console.log("Erreur API:", response.status);
+    }
+  } catch (error) {
+    console.error("Erreur:", error);
+  }
+});
