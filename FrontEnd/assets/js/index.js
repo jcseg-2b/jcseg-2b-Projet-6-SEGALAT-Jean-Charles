@@ -1,8 +1,3 @@
-// ╔══════════════════════════════════════════════════════════════════════════════╗
-// ║                         PROJET SOPHIE BLUEL                                  ║
-// ║                         Portfolio Architecte                                 ║
-// ╚══════════════════════════════════════════════════════════════════════════════╝
-
 // ============================================================================
 // 1. VARIABLES GLOBALES
 // ============================================================================
@@ -91,7 +86,7 @@ const displayWorksInModal = function () {
           {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
 
         if (response.ok) {
@@ -217,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       button.addEventListener("click", () => {
         const filteredWorks = works.filter(
-          (work) => work.categoryId === category.id
+          (work) => work.categoryId === category.id,
         );
         displayWorks(filteredWorks);
         activateButton(button);
@@ -519,7 +514,7 @@ document.addEventListener("keydown", function (e) {
       e.preventDefault();
 
       const elements = modal2.querySelectorAll(
-        "button:not([hidden]), input:not([hidden]), select:not([hidden]), textarea:not([hidden]), a:not([hidden])"
+        "button:not([hidden]), input:not([hidden]), select:not([hidden]), textarea:not([hidden]), a:not([hidden])",
       );
       const visibles = Array.from(elements).filter((el) => {
         return el.offsetWidth > 0 && el.offsetHeight > 0;

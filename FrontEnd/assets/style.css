@@ -448,10 +448,17 @@ footer nav ul {
   margin: 40px 0;
 }
 
+.gallery1 > div {
+  position: relative;
+  width: 100%;
+}
+
 .gallery1 img {
   width: 100%;
+  max-width: 75px;
   height: 100px;
   object-fit: cover;
+  display: block;
 }
 
 .modal-border {
